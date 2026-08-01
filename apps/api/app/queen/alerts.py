@@ -6,9 +6,14 @@ from app.db import get_client
 
 
 def _build_message(monitor_type: str, status: str, details: dict) -> str:
-    errors = details.get("errors") or []
-    if errors:
-        return f"{monitor_type.upper()} {status}: {'; '.join(errors)}"
+    parts = []
+    if details.get("listed_on"):
+        parts.append(f"listed on {', '.join(details['listed_on'])}")
+    if details.get("errors"):
+        parts.append("; ".join(details["errors"]))
+
+    if parts:
+        return f"{monitor_type.upper()} {status}: {' | '.join(parts)}"
     return f"{monitor_type.upper()} {status}"
 
 
