@@ -78,6 +78,86 @@ export async function getDomainStatuses(): Promise<DomainStatusRow[]> {
   });
 }
 
+export type DomainDetail = {
+  domainId: string;
+  domainName: string;
+  clientName: string;
+  isActive: boolean;
+  checks: {
+    monitorType: MonitorType;
+    status: MonitorStatus;
+    checkedAt: string | null;
+    score: number | null;
+    details: Record<string, unknown>;
+  }[];
+  alerts: {
+    id: string;
+    monitorType: string;
+    severity: string;
+    status: string;
+    message: string;
+    createdAt: string;
+    resolvedAt: string | null;
+  }[];
+};
+
+export async function getDomainDetail(domainId: string): Promise<DomainDetail | null> {
+  const supabase = getServerSupabase();
+
+  const { data: domain, error: domainError } = await supabase
+    .from("domains")
+    .select("id, domain_name, is_active, clients(name)")
+    .eq("id", domainId)
+    .maybeSingle();
+  if (domainError) throw domainError;
+  if (!domain) return null;
+
+  const { data: latestResults, error: resultsError } = await supabase
+    .from("latest_check_results")
+    .select("monitor_type, status, checked_at, score, details")
+    .eq("domain_id", domainId);
+  if (resultsError) throw resultsError;
+
+  const resultsByMonitor = new Map(
+    (latestResults ?? []).map((row) => [row.monitor_type, row])
+  );
+
+  const checks = MONITOR_TYPES.map((monitorType) => {
+    const result = resultsByMonitor.get(monitorType);
+    return {
+      monitorType,
+      status: (result?.status as MonitorStatus) ?? "no_data",
+      checkedAt: result?.checked_at ?? null,
+      score: result?.score ?? null,
+      details: (result?.details as Record<string, unknown>) ?? {},
+    };
+  });
+
+  const { data: alerts, error: alertsError } = await supabase
+    .from("alerts")
+    .select("id, monitor_type, severity, status, message, created_at, resolved_at")
+    .eq("domain_id", domainId)
+    .order("created_at", { ascending: false });
+  if (alertsError) throw alertsError;
+
+  return {
+    domainId: domain.id,
+    domainName: domain.domain_name,
+    clientName: (domain.clients as { name: string } | null)?.name ?? "Unknown",
+    isActive: domain.is_active,
+    checks,
+    alerts: (alerts ?? []).map((a) => ({
+      id: a.id,
+      monitorType: a.monitor_type,
+      severity: a.severity,
+      status: a.status,
+      message: a.message,
+      createdAt: a.created_at,
+      resolvedAt: a.resolved_at,
+    })),
+  };
+}
+
 export type AlertRow = {
   id: string;
   domainName: string;
