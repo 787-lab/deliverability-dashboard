@@ -1,6 +1,8 @@
 import { getAlerts } from "@/lib/data";
 import { SeverityBadge } from "@/components/StatusBadge";
 
+export const dynamic = "force-dynamic";
+
 function formatDate(iso: string | null) {
   if (!iso) return <span className="text-subtle">—</span>;
   return new Date(iso).toLocaleString();

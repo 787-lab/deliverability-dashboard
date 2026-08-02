@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getDomainStatuses, MONITOR_TYPES } from "@/lib/data";
 import { StatusBadge } from "@/components/StatusBadge";
 
+export const dynamic = "force-dynamic";
+
 const MONITOR_LABELS: Record<(typeof MONITOR_TYPES)[number], string> = {
   spf: "SPF",
   dkim: "DKIM",
