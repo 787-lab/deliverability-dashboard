@@ -86,7 +86,7 @@ export default async function DomainDetailPage({
   return (
     <div>
       <Link
-        href="/"
+        href="/admin"
         className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground"
       >
         <svg viewBox="0 0 20 20" fill="none" className="h-3.5 w-3.5" strokeWidth={2}>

@@ -55,7 +55,7 @@ export default async function StatusPage() {
                     <td className="px-5 py-3.5 text-muted">{domain.clientName}</td>
                     <td className="px-5 py-3.5 font-medium">
                       <Link
-                        href={`/domains/${domain.domainId}`}
+                        href={`/admin/domains/${domain.domainId}`}
                         className="text-foreground hover:text-accent hover:underline underline-offset-2"
                       >
                         {domain.domainName}
