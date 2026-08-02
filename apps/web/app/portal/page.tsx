@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { getServerSupabaseForUser } from "@/lib/supabase/server";
 import { SignOutButton } from "./SignOutButton";
+import { AddDomainForm } from "./AddDomainForm";
+import { DomainList } from "./DomainList";
 
 export default async function PortalHome() {
   const supabase = await getServerSupabaseForUser();
@@ -13,10 +15,19 @@ export default async function PortalHome() {
   }
 
   return (
-    <div className="mx-auto mt-16 max-w-md rounded-xl border border-border bg-surface p-6 shadow-sm">
-      <h1 className="mb-2 text-lg font-semibold text-foreground">Welcome</h1>
-      <p className="mb-4 text-sm text-muted">Logged in as {user.email}</p>
-      <SignOutButton />
+    <div className="mx-auto mt-16 max-w-md space-y-6">
+      <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+        <h1 className="mb-2 text-lg font-semibold text-foreground">Welcome</h1>
+        <p className="mb-4 text-sm text-muted">Logged in as {user.email}</p>
+        <SignOutButton />
+      </div>
+
+      <div>
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-subtle">Your domains</h2>
+        <DomainList />
+      </div>
+
+      <AddDomainForm />
     </div>
   );
 }

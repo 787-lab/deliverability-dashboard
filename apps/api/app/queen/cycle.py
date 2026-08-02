@@ -8,7 +8,14 @@ from app.workers.runner import run_and_store
 
 def run_cycle() -> dict:
     client = get_client()
-    domains = client.table("domains").select("*").eq("is_active", True).execute().data
+    domains = (
+        client.table("domains")
+        .select("*")
+        .eq("is_active", True)
+        .eq("is_verified", True)
+        .execute()
+        .data
+    )
 
     summary = {
         "domains_checked": 0,
