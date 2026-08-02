@@ -1,10 +1,21 @@
+import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
+import { getServerSupabaseForUser } from "@/lib/supabase/server";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await getServerSupabaseForUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user || user.email !== process.env.ADMIN_EMAIL) {
+    redirect("/admin/login");
+  }
+
   return (
     <>
       <Sidebar />
