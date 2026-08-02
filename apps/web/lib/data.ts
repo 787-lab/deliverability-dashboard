@@ -70,7 +70,7 @@ export async function getDomainStatuses(): Promise<DomainStatusRow[]> {
     return {
       domainId: domain.id,
       domainName: domain.domain_name,
-      clientName: (domain.clients as { name: string } | null)?.name ?? "Unknown",
+      clientName: (domain.clients as unknown as { name: string } | null)?.name ?? "Unknown",
       isActive: domain.is_active,
       openAlertCount: openAlertCounts.get(domain.id) ?? 0,
       statuses,
@@ -143,7 +143,7 @@ export async function getDomainDetail(domainId: string): Promise<DomainDetail | 
   return {
     domainId: domain.id,
     domainName: domain.domain_name,
-    clientName: (domain.clients as { name: string } | null)?.name ?? "Unknown",
+    clientName: (domain.clients as unknown as { name: string } | null)?.name ?? "Unknown",
     isActive: domain.is_active,
     checks,
     alerts: (alerts ?? []).map((a) => ({
@@ -183,7 +183,10 @@ export async function getAlerts(limit = 100): Promise<AlertRow[]> {
   if (error) throw error;
 
   return (data ?? []).map((alert) => {
-    const domain = alert.domains as { domain_name: string; clients: { name: string } | null } | null;
+    const domain = alert.domains as unknown as {
+      domain_name: string;
+      clients: { name: string } | null;
+    } | null;
     return {
       id: alert.id,
       domainName: domain?.domain_name ?? "Unknown domain",
