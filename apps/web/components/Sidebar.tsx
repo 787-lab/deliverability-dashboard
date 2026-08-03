@@ -33,6 +33,41 @@ const NAV_ITEMS = [
       </svg>
     ),
   },
+  {
+    href: "/admin/clients",
+    label: "Clients",
+    icon: (
+      <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" strokeWidth={1.75}>
+        <circle cx="7" cy="6.5" r="2.25" stroke="currentColor" />
+        <path
+          d="M2.75 15.5c0-2.5 1.9-4 4.25-4s4.25 1.5 4.25 4"
+          stroke="currentColor"
+          strokeLinecap="round"
+        />
+        <circle cx="13.5" cy="6.5" r="1.9" stroke="currentColor" />
+        <path
+          d="M12 11.7c1.9.2 3.25 1.6 3.25 3.8"
+          stroke="currentColor"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    href: "/admin/domains",
+    label: "Domains",
+    icon: (
+      <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" strokeWidth={1.75}>
+        <circle cx="10" cy="10" r="7" stroke="currentColor" />
+        <path d="M3 10h14M10 3c1.8 1.9 2.8 4.3 2.8 7s-1 5.1-2.8 7c-1.8-1.9-2.8-4.3-2.8-7s1-5.1 2.8-7Z" stroke="currentColor" />
+      </svg>
+    ),
+  },
+];
+
+const QUICK_LINKS = [
+  { href: "/portal", label: "View Portal" },
+  { href: "/", label: "View Public Site" },
 ];
 
 export function Sidebar() {
@@ -69,6 +104,28 @@ export function Sidebar() {
             </Link>
           );
         })}
+
+        <div className="my-3 border-t border-border" />
+
+        {QUICK_LINKS.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-background hover:text-foreground"
+          >
+            <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4 text-subtle" strokeWidth={1.75}>
+              <path
+                d="M8 5H4.75A1.75 1.75 0 0 0 3 6.75v8.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0 0 15 15.25V12M11 3h6v6M16.5 3.5 9 11"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {item.label}
+          </a>
+        ))}
       </nav>
 
       <div className="border-t border-border px-5 py-4 text-[11px] text-subtle">

@@ -21,6 +21,66 @@ export async function getClients(): Promise<ClientOption[]> {
   return data ?? [];
 }
 
+export type ClientWithStatus = {
+  id: string;
+  name: string;
+  contactEmail: string | null;
+  isLinked: boolean;
+  domainCount: number;
+};
+
+export async function getClientsWithStatus(): Promise<ClientWithStatus[]> {
+  const supabase = getServerSupabase();
+
+  const { data: clients, error: clientsError } = await supabase
+    .from("clients")
+    .select("id, name, contact_email, user_id")
+    .order("name");
+  if (clientsError) throw clientsError;
+
+  const { data: domains, error: domainsError } = await supabase.from("domains").select("client_id");
+  if (domainsError) throw domainsError;
+
+  const domainCounts = new Map<string, number>();
+  for (const domain of domains ?? []) {
+    domainCounts.set(domain.client_id, (domainCounts.get(domain.client_id) ?? 0) + 1);
+  }
+
+  return (clients ?? []).map((client) => ({
+    id: client.id,
+    name: client.name,
+    contactEmail: client.contact_email,
+    isLinked: client.user_id !== null,
+    domainCount: domainCounts.get(client.id) ?? 0,
+  }));
+}
+
+export type AdminDomainRow = {
+  id: string;
+  domainName: string;
+  clientName: string;
+  isVerified: boolean;
+  createdAt: string;
+};
+
+export async function getAllDomains(): Promise<AdminDomainRow[]> {
+  const supabase = getServerSupabase();
+
+  const { data, error } = await supabase
+    .from("domains")
+    .select("id, domain_name, is_verified, created_at, clients(name)")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+
+  return (data ?? []).map((domain) => ({
+    id: domain.id,
+    domainName: domain.domain_name,
+    clientName: (domain.clients as unknown as { name: string } | null)?.name ?? "Unknown",
+    isVerified: domain.is_verified,
+    createdAt: domain.created_at,
+  }));
+}
+
 export type DomainStatusRow = {
   domainId: string;
   domainName: string;
