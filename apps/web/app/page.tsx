@@ -1,6 +1,17 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSupabaseForUser } from "@/lib/supabase/server";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await getServerSupabaseForUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    redirect(user.email === process.env.ADMIN_EMAIL ? "/admin" : "/portal");
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="flex h-16 items-center justify-between border-b border-border px-6">
