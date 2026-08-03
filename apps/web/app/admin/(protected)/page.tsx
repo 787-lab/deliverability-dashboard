@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { getDomainStatuses, MONITOR_TYPES } from "@/lib/data";
+import { getClients, getDomainStatuses, MONITOR_TYPES } from "@/lib/data";
 import { StatusBadge } from "@/components/StatusBadge";
+import { AddDomainAdminForm } from "./AddDomainAdminForm";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,7 @@ const MONITOR_LABELS: Record<(typeof MONITOR_TYPES)[number], string> = {
 };
 
 export default async function StatusPage() {
-  const domains = await getDomainStatuses();
+  const [domains, clients] = await Promise.all([getDomainStatuses(), getClients()]);
 
   return (
     <div>
@@ -25,13 +26,15 @@ export default async function StatusPage() {
         </p>
       </div>
 
+      {clients.length > 0 && <AddDomainAdminForm clients={clients} />}
+
       {domains.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border-strong bg-surface px-8 py-16 text-center">
           <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-background text-subtle">
             —
           </div>
           <p className="text-sm font-medium text-foreground">No domains yet</p>
-          <p className="mt-1 text-sm text-subtle">Add a client and domain in Supabase to see status here.</p>
+          <p className="mt-1 text-sm text-subtle">Add one above to see status here.</p>
         </div>
       ) : (
         <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">

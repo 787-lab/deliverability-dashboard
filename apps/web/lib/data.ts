@@ -12,6 +12,15 @@ export const MONITOR_TYPES = [
 export type MonitorType = (typeof MONITOR_TYPES)[number];
 export type MonitorStatus = "pass" | "warning" | "fail" | "unknown" | "no_data";
 
+export type ClientOption = { id: string; name: string };
+
+export async function getClients(): Promise<ClientOption[]> {
+  const supabase = getServerSupabase();
+  const { data, error } = await supabase.from("clients").select("id, name").order("name");
+  if (error) throw error;
+  return data ?? [];
+}
+
 export type DomainStatusRow = {
   domainId: string;
   domainName: string;
