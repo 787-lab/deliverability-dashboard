@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getClients, getDomainStatuses, MONITOR_TYPES } from "@/lib/data";
 import { StatusBadge } from "@/components/StatusBadge";
 import { AddDomainAdminForm } from "./AddDomainAdminForm";
+import { AddClientAdminForm } from "./AddClientAdminForm";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,7 @@ export default async function StatusPage() {
         </p>
       </div>
 
+      <AddClientAdminForm />
       {clients.length > 0 && <AddDomainAdminForm clients={clients} />}
 
       {domains.length === 0 ? (
