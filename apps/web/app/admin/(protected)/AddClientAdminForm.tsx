@@ -32,14 +32,14 @@ export function AddClientAdminForm() {
       <p className="mb-4 text-sm text-muted">
         They log in at /portal/login with this email — it links to this client automatically on first login.
       </p>
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
         <input
           type="text"
           required
           placeholder="Client name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-48 rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft"
+          className="rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft sm:w-48"
         />
         <input
           type="email"
@@ -47,7 +47,7 @@ export function AddClientAdminForm() {
           placeholder="contact@client.com"
           value={contactEmail}
           onChange={(e) => setContactEmail(e.target.value)}
-          className="flex-1 rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft"
+          className="rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft sm:flex-1"
         />
         <button
           type="submit"

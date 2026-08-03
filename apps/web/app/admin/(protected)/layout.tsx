@@ -19,8 +19,8 @@ export default async function DashboardLayout({
   return (
     <>
       <Sidebar />
-      <main className="min-h-screen pl-[var(--sidebar-width)]">
-        <div className="mx-auto w-full max-w-6xl px-8 py-10">{children}</div>
+      <main className="min-h-screen lg:pl-[var(--sidebar-width)]">
+        <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 sm:py-10">{children}</div>
       </main>
     </>
   );

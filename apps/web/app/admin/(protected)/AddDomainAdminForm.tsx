@@ -32,7 +32,7 @@ export function AddDomainAdminForm({ clients }: { clients: ClientOption[] }) {
       <p className="mb-4 text-sm text-muted">
         Adds and marks the domain verified immediately — no TXT record needed for admin-added domains.
       </p>
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
         <select
           value={clientId}
           onChange={(e) => setClientId(e.target.value)}
@@ -50,7 +50,7 @@ export function AddDomainAdminForm({ clients }: { clients: ClientOption[] }) {
           placeholder="mail.client.com"
           value={domainName}
           onChange={(e) => setDomainName(e.target.value)}
-          className="flex-1 rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft"
+          className="rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft sm:flex-1"
         />
         <button
           type="submit"

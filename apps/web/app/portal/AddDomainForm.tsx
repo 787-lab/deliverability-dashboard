@@ -28,14 +28,14 @@ export function AddDomainForm() {
     <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
       <h2 className="mb-1 text-lg font-semibold text-foreground">Add a domain</h2>
       <p className="mb-4 text-sm text-muted">Connect a sending domain to start monitoring it.</p>
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
         <input
           type="text"
           required
           placeholder="mail.yourcompany.com"
           value={domainName}
           onChange={(e) => setDomainName(e.target.value)}
-          className="flex-1 rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft"
+          className="rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft sm:flex-1"
         />
         <button
           type="submit"
