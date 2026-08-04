@@ -1,8 +1,10 @@
 import { redirect } from "next/navigation";
 import { getServerSupabaseForUser } from "@/lib/supabase/server";
+import { getMyClient } from "@/lib/portal-data";
 import { SignOutButton } from "./SignOutButton";
 import { AddDomainForm } from "./AddDomainForm";
 import { DomainList } from "./DomainList";
+import { OnboardingForm } from "./OnboardingForm";
 
 export default async function PortalHome() {
   const supabase = await getServerSupabaseForUser();
@@ -12,6 +14,16 @@ export default async function PortalHome() {
 
   if (!user) {
     redirect("/portal/login");
+  }
+
+  const client = await getMyClient();
+
+  if (!client) {
+    return (
+      <div className="mx-auto mt-16 max-w-md">
+        <OnboardingForm />
+      </div>
+    );
   }
 
   return (

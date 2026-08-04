@@ -6,6 +6,43 @@ import { getServerSupabase } from "@/lib/supabase";
 import { getServerSupabaseForUser } from "@/lib/supabase/server";
 import { verificationTxtRecord } from "@/lib/domain-verification";
 
+export type CreateMyClientResult = { ok: true } | { ok: false; error: string };
+
+export async function createMyClient(nameInput: string): Promise<CreateMyClientResult> {
+  const supabase = await getServerSupabaseForUser();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { ok: false, error: "You must be logged in." };
+  }
+
+  const name = nameInput.trim();
+  if (!name) {
+    return { ok: false, error: "Enter your company name." };
+  }
+
+  // There's no RLS insert policy on clients at all — creating a client is
+  // sensitive enough that it should only happen through server-validated
+  // paths like this one, not be open to whatever an authenticated session
+  // could construct. Goes through the admin connection instead; user_id's
+  // unique constraint (0004) still stops one login from ending up with two
+  // client rows if this ever runs twice.
+  const admin = getServerSupabase();
+  const { error } = await admin.from("clients").insert({ name, contact_email: user.email, user_id: user.id });
+
+  if (error) {
+    if (error.code === "23505") {
+      return { ok: false, error: "An account is already linked to this login." };
+    }
+    return { ok: false, error: "Could not create your account. Please try again." };
+  }
+
+  revalidatePath("/portal");
+  return { ok: true };
+}
+
 export type AddDomainResult =
   | { ok: true; domainId: string; domainName: string; verificationToken: string }
   | { ok: false; error: string };

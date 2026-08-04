@@ -1,5 +1,21 @@
 import { getServerSupabaseForUser } from "./supabase/server";
 
+export type MyClient = { id: string; name: string };
+
+export async function getMyClient(): Promise<MyClient | null> {
+  const supabase = await getServerSupabaseForUser();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data, error } = await supabase.from("clients").select("id, name").eq("user_id", user.id).maybeSingle();
+  if (error) throw error;
+
+  return data;
+}
+
 export type PortalDomain = {
   id: string;
   domainName: string;
