@@ -8,11 +8,13 @@ from app.workers.runner import run_and_store
 
 def run_cycle() -> dict:
     client = get_client()
+    # Verification (TXT record) is optional and doesn't gate monitoring —
+    # a domain starts getting checked as soon as it's added. is_verified
+    # only controls whether the client sees a "Verified" badge.
     domains = (
         client.table("domains")
         .select("*")
         .eq("is_active", True)
-        .eq("is_verified", True)
         .execute()
         .data
     )

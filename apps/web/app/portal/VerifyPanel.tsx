@@ -50,7 +50,10 @@ export function VerifyPanel({
         <p className="text-sm text-muted">DNS record confirmed. This domain will start being monitored shortly.</p>
       ) : (
         <>
-          <p className="mb-4 text-sm text-muted">Add this TXT record at your DNS provider, then verify.</p>
+          <p className="mb-4 text-sm text-muted">
+            This domain is already being monitored. Add this TXT record and verify anytime to prove ownership
+            and get the Verified badge — it&apos;s optional, not required for monitoring.
+          </p>
           <dl className="space-y-3 rounded-md border border-border bg-background p-4 text-sm">
             <div>
               <dt className="text-xs font-medium uppercase tracking-wide text-subtle">Type</dt>

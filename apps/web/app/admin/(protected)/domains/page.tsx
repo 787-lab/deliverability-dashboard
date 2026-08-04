@@ -56,7 +56,7 @@ export default async function DomainsPage() {
                         </span>
                       ) : (
                         <span className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700">
-                          Pending
+                          Unverified
                         </span>
                       )}
                     </td>
