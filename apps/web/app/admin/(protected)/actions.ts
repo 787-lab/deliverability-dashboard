@@ -56,6 +56,28 @@ export async function adminAddDomain(clientId: string, domainNameInput: string):
   return { ok: true };
 }
 
+export async function adminDeleteDomain(domainId: string): Promise<AdminActionResult> {
+  const auth = await requireAdmin();
+  if (!auth.ok) return auth;
+
+  if (!domainId) {
+    return { ok: false, error: "Missing domain." };
+  }
+
+  // check_results and alerts both cascade on domain deletion (0001_init_schema.sql),
+  // so removing the domain row alone wipes its full history too.
+  const admin = getServerSupabase();
+  const { error } = await admin.from("domains").delete().eq("id", domainId);
+
+  if (error) {
+    return { ok: false, error: "Could not delete domain. Please try again." };
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/domains");
+  return { ok: true };
+}
+
 export async function adminAddClient(nameInput: string, contactEmailInput: string): Promise<AdminActionResult> {
   const auth = await requireAdmin();
   if (!auth.ok) return auth;

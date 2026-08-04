@@ -42,6 +42,12 @@ function DetailLines({
     const ruf = details.ruf as string[] | undefined;
     if (ruf?.length) lines.push({ label: "Forensic reports (ruf)", value: ruf.join(", ") });
   } else if (monitorType === "dkim") {
+    if (details.selector) {
+      lines.push({
+        label: "Selector",
+        value: details.selector_auto_detected ? `${details.selector} (auto-detected)` : String(details.selector),
+      });
+    }
     if (score !== null) lines.push({ label: "Key strength", value: `${score}-bit` });
   } else if (monitorType === "domain_reputation") {
     const listedOn = details.listed_on as string[] | undefined;

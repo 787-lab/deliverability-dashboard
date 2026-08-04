@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getDomainStatuses, MONITOR_TYPES } from "@/lib/data";
 import { StatusBadge } from "@/components/StatusBadge";
+import { DeleteDomainButton } from "./DeleteDomainButton";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +48,7 @@ export default async function StatusPage() {
                     </th>
                   ))}
                   <th className="px-5 py-3 text-right font-medium">Open Alerts</th>
+                  <th className="px-5 py-3 text-right font-medium"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -76,6 +78,9 @@ export default async function StatusPage() {
                           0
                         </span>
                       )}
+                    </td>
+                    <td className="px-5 py-3.5 text-right">
+                      <DeleteDomainButton domainId={domain.domainId} domainName={domain.domainName} />
                     </td>
                   </tr>
                 ))}
