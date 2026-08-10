@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getDomainStatuses, MONITOR_TYPES } from "@/lib/data";
 import { StatusBadge } from "@/components/StatusBadge";
 import { DeleteDomainButton } from "./DeleteDomainButton";
+import { CheckNowButton } from "./CheckNowButton";
 
 export const dynamic = "force-dynamic";
 
@@ -80,7 +81,10 @@ export default async function StatusPage() {
                       )}
                     </td>
                     <td className="px-5 py-3.5 text-right">
-                      <DeleteDomainButton domainId={domain.domainId} domainName={domain.domainName} />
+                      <div className="flex items-center justify-end gap-2">
+                        <CheckNowButton domainId={domain.domainId} />
+                        <DeleteDomainButton domainId={domain.domainId} domainName={domain.domainName} />
+                      </div>
                     </td>
                   </tr>
                 ))}

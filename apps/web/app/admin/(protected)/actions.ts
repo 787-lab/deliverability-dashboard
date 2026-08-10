@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getServerSupabase } from "@/lib/supabase";
 import { getServerSupabaseForUser } from "@/lib/supabase/server";
+import { triggerDomainCheck } from "@/lib/checker";
 
 export type AdminActionResult = { ok: true } | { ok: false; error: string };
 
@@ -72,6 +73,22 @@ export async function adminDeleteDomain(domainId: string): Promise<AdminActionRe
   if (error) {
     return { ok: false, error: "Could not delete domain. Please try again." };
   }
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/domains");
+  return { ok: true };
+}
+
+export async function adminCheckDomainNow(domainId: string): Promise<AdminActionResult> {
+  const auth = await requireAdmin();
+  if (!auth.ok) return auth;
+
+  if (!domainId) {
+    return { ok: false, error: "Missing domain." };
+  }
+
+  const result = await triggerDomainCheck(domainId);
+  if (!result.ok) return result;
 
   revalidatePath("/admin");
   revalidatePath("/admin/domains");

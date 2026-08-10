@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { getServerSupabase } from "@/lib/supabase";
 import { getServerSupabaseForUser } from "@/lib/supabase/server";
 import { verificationTxtRecord } from "@/lib/domain-verification";
+import { triggerDomainCheck } from "@/lib/checker";
 
 export type CreateMyClientResult = { ok: true } | { ok: false; error: string };
 
@@ -91,6 +92,12 @@ export async function addDomain(domainNameInput: string): Promise<AddDomainResul
     return { ok: false, error: "Could not add domain. Please try again." };
   }
 
+  // Best-effort: run the first check right away so the client sees real
+  // results instead of "No data" until the next nightly cycle. If the
+  // checker is briefly unreachable, the domain is still added fine — the
+  // nightly cron will pick it up regardless.
+  await triggerDomainCheck(domain.id);
+
   revalidatePath("/portal");
 
   return {
@@ -99,6 +106,37 @@ export async function addDomain(domainNameInput: string): Promise<AddDomainResul
     domainName: domain.domain_name,
     verificationToken: domain.verification_token,
   };
+}
+
+export type CheckDomainNowResult = { ok: true } | { ok: false; error: string };
+
+export async function checkMyDomainNow(domainId: string): Promise<CheckDomainNowResult> {
+  const supabase = await getServerSupabaseForUser();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { ok: false, error: "You must be logged in." };
+  }
+
+  // RLS scopes this to domains the caller's client owns — a stranger's
+  // domain ID just comes back null, same as "not found."
+  const { data: domain, error: domainError } = await supabase
+    .from("domains")
+    .select("id")
+    .eq("id", domainId)
+    .maybeSingle();
+
+  if (domainError || !domain) {
+    return { ok: false, error: "Domain not found." };
+  }
+
+  const result = await triggerDomainCheck(domain.id);
+  if (!result.ok) return result;
+
+  revalidatePath("/portal");
+  return { ok: true };
 }
 
 export type VerifyDomainResult =

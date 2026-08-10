@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { verifyDomain } from "./actions";
 import { verificationTxtRecord } from "@/lib/domain-verification";
+import { CheckNowButton } from "./CheckNowButton";
 
 export function VerifyPanel({
   domainId,
@@ -37,13 +38,16 @@ export function VerifyPanel({
 
   return (
     <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
-      <div className="mb-1 flex items-center gap-2">
-        <h2 className="text-lg font-semibold text-foreground">Verify {domainName}</h2>
-        {state === "verified" && (
-          <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
-            Verified
-          </span>
-        )}
+      <div className="mb-1 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-foreground">Verify {domainName}</h2>
+          {state === "verified" && (
+            <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
+              Verified
+            </span>
+          )}
+        </div>
+        <CheckNowButton domainId={domainId} />
       </div>
 
       {state === "verified" ? (
