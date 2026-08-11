@@ -1,19 +1,10 @@
 import Link from "next/link";
-import { getDomainStatuses, MONITOR_TYPES } from "@/lib/data";
+import { getDomainStatuses, MONITOR_TYPES, MONITOR_LABELS } from "@/lib/data";
 import { StatusBadge } from "@/components/StatusBadge";
 import { DeleteDomainButton } from "./DeleteDomainButton";
 import { CheckNowButton } from "./CheckNowButton";
 
 export const dynamic = "force-dynamic";
-
-const MONITOR_LABELS: Record<(typeof MONITOR_TYPES)[number], string> = {
-  spf: "SPF",
-  dkim: "DKIM",
-  dmarc: "DMARC",
-  domain_reputation: "Reputation",
-  warmup: "Warmup",
-  inbox_placement: "Inbox Placement",
-};
 
 export default async function StatusPage() {
   const domains = await getDomainStatuses();

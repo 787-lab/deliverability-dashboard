@@ -12,6 +12,15 @@ export const MONITOR_TYPES = [
 export type MonitorType = (typeof MONITOR_TYPES)[number];
 export type MonitorStatus = "pass" | "warning" | "fail" | "unknown" | "no_data";
 
+export const MONITOR_LABELS: Record<MonitorType, string> = {
+  spf: "SPF",
+  dkim: "DKIM",
+  dmarc: "DMARC",
+  domain_reputation: "Reputation",
+  warmup: "Warmup",
+  inbox_placement: "Inbox Placement",
+};
+
 export type ClientOption = { id: string; name: string };
 
 export async function getClients(): Promise<ClientOption[]> {
