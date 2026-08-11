@@ -4,6 +4,7 @@ import { getMyClient } from "@/lib/portal-data";
 import { SignOutButton } from "./SignOutButton";
 import { AddDomainForm } from "./AddDomainForm";
 import { DomainList } from "./DomainList";
+import { DomainStatusSection } from "./DomainStatusSection";
 import { OnboardingForm } from "./OnboardingForm";
 
 export default async function PortalHome() {
@@ -33,6 +34,8 @@ export default async function PortalHome() {
         <p className="mb-4 text-sm text-muted">Logged in as {user.email}</p>
         <SignOutButton />
       </div>
+
+      <DomainStatusSection />
 
       <div>
         <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-subtle">Your domains</h2>
