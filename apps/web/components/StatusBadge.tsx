@@ -1,7 +1,7 @@
 const STYLES: Record<string, string> = {
-  pass: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  warning: "bg-amber-50 text-amber-700 border-amber-200",
-  fail: "bg-rose-50 text-rose-700 border-rose-200",
+  pass: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+  warning: "bg-amber-50 text-amber-700 border-amber-200/80",
+  fail: "bg-rose-50 text-rose-700 border-rose-200/80",
   unknown: "bg-slate-50 text-slate-600 border-slate-200",
   no_data: "bg-slate-50 text-subtle border-slate-200 border-dashed",
 };
@@ -25,7 +25,7 @@ const LABELS: Record<string, string> = {
 export function StatusBadge({ status }: { status: string }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
         STYLES[status] ?? STYLES.unknown
       }`}
     >

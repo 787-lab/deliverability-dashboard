@@ -20,23 +20,20 @@ export default async function PortalHome() {
 
   if (!client) {
     return (
-      <div className="mx-auto mt-16 max-w-md">
+      <div className="mx-auto mt-12 max-w-lg">
         <OnboardingForm />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto mt-16 max-w-4xl space-y-6">
-      <div className="mx-auto max-w-md rounded-xl border border-border bg-surface p-6 shadow-sm">
-        <h1 className="mb-2 text-lg font-semibold text-foreground">Welcome</h1>
-        <p className="mb-4 text-sm text-muted">Logged in as {user.email}</p>
-        <SignOutButton />
+    <div className="space-y-8">
+      <div className="flex flex-col gap-5 border-b border-border pb-7 sm:flex-row sm:items-end sm:justify-between">
+        <div><p className="eyebrow">Client workspace</p><h1 className="page-title mt-2">{client.name}</h1><p className="mt-2 text-sm text-muted">Live health for your sending infrastructure.</p></div>
+        <div className="flex items-center gap-3"><span className="hidden text-xs text-subtle sm:block">{user.email}</span><SignOutButton /></div>
       </div>
-
       <DomainStatusSection />
-
-      <div className="mx-auto max-w-md">
+      <div className="max-w-2xl">
         <AddDomainForm />
       </div>
     </div>

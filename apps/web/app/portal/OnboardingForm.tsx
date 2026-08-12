@@ -24,9 +24,9 @@ export function OnboardingForm() {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
-      <h1 className="mb-2 text-lg font-semibold text-foreground">Welcome — let&apos;s get you set up</h1>
-      <p className="mb-4 text-sm text-muted">What&apos;s your company or client name?</p>
+    <div className="app-card p-7 sm:p-8"><p className="eyebrow">First step</p>
+      <h1 className="mb-2 mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Let&apos;s set up your workspace</h1>
+      <p className="mb-6 text-sm text-muted">What&apos;s your company or client name?</p>
       <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="text"
@@ -35,12 +35,12 @@ export function OnboardingForm() {
           placeholder="Company name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft"
+          className="field"
         />
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+          className="primary-button w-full disabled:opacity-50"
         >
           {status === "submitting" ? "Setting up…" : "Continue"}
         </button>

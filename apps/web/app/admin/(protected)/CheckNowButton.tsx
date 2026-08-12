@@ -28,7 +28,7 @@ export function CheckNowButton({ domainId }: { domainId: string }) {
         type="button"
         onClick={handleClick}
         disabled={state === "checking"}
-        className="rounded-md border border-border-strong px-2.5 py-1 text-xs font-medium text-muted transition-colors hover:bg-background disabled:opacity-50"
+        className="secondary-button !rounded-lg !px-3 !py-1.5 !text-xs disabled:opacity-50"
       >
         {state === "checking" ? "Checking…" : "Check now"}
       </button>

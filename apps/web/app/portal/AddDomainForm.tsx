@@ -25,9 +25,9 @@ export function AddDomainForm() {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
-      <h2 className="mb-1 text-lg font-semibold text-foreground">Add a domain</h2>
-      <p className="mb-4 text-sm text-muted">Connect a sending domain to start monitoring it.</p>
+    <div className="app-card p-6 sm:p-7">
+      <p className="eyebrow">Expand monitoring</p><h2 className="mt-2 text-lg font-bold text-foreground">Add a sending domain</h2>
+      <p className="mb-5 mt-1 text-sm text-muted">Connect a domain now. We’ll guide you through ownership verification next.</p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
         <input
           type="text"
@@ -35,12 +35,12 @@ export function AddDomainForm() {
           placeholder="mail.yourcompany.com"
           value={domainName}
           onChange={(e) => setDomainName(e.target.value)}
-          className="rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft sm:flex-1"
+          className="field sm:flex-1"
         />
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="shrink-0 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+          className="primary-button shrink-0 disabled:opacity-50"
         >
           {status === "submitting" ? "Adding…" : "Add domain"}
         </button>

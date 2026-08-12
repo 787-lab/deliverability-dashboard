@@ -29,8 +29,8 @@ export default function LoginPage() {
 
   if (status === "sent") {
     return (
-      <div className="mx-auto mt-16 max-w-sm rounded-xl border border-border bg-surface p-6 text-center shadow-sm">
-        <h1 className="mb-2 text-lg font-semibold text-foreground">Check your email</h1>
+      <div className="app-card mx-auto mt-12 max-w-md p-7 text-center sm:p-8">
+        <div className="mx-auto mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent">✓</div><h1 className="mb-2 text-xl font-bold text-foreground">Check your email</h1>
         <p className="text-sm text-muted">
           We sent a login link to <strong className="text-foreground">{email}</strong>. Click it to sign in.
         </p>
@@ -39,8 +39,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="mx-auto mt-16 max-w-sm rounded-xl border border-border bg-surface p-6 shadow-sm">
-      <h1 className="mb-4 text-lg font-semibold text-foreground">Client Login</h1>
+    <div className="app-card mx-auto mt-12 max-w-md p-7 sm:p-8">
+      <p className="eyebrow">Client portal</p><h1 className="mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Sign in to your workspace</h1><p className="mb-6 mt-2 text-sm leading-6 text-muted">We’ll email a secure sign-in link. No password required.</p>
       <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="email"
@@ -48,12 +48,12 @@ export default function LoginPage() {
           placeholder="you@yourcompany.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-md border border-border-strong px-3 py-2 text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft"
+          className="field"
         />
         <button
           type="submit"
           disabled={status === "sending"}
-          className="w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+          className="primary-button w-full disabled:opacity-50"
         >
           {status === "sending" ? "Sending…" : "Send login link"}
         </button>
