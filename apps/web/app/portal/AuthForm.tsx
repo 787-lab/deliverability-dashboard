@@ -71,12 +71,15 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     return (
       <div className="app-card mx-auto mt-12 max-w-md p-7 text-center sm:p-8">
         <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-lg font-bold text-emerald-700">✓</div>
-        <p className="eyebrow">Account created</p>
-        <h1 className="mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Confirm your email</h1>
+        <p className="eyebrow">Check your inbox</p>
+        <h1 className="mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Continue with your email</h1>
         <p className="mt-3 text-sm leading-6 text-muted">
-          We sent a confirmation email to <strong className="text-foreground">{email}</strong>. Confirm it once, then sign in with your password.
+          If this is a new account, we sent a confirmation link to <strong className="text-foreground">{email}</strong>. If you already have an account, sign in or reset your password.
         </p>
-        <Link href="/portal/login" className="secondary-button mt-6 w-full">Return to sign in</Link>
+        <div className="mt-6 grid gap-3">
+          <Link href="/portal/login" className="primary-button w-full">Return to sign in</Link>
+          <Link href={`/portal/forgot-password?email=${encodeURIComponent(email)}`} className="secondary-button w-full">Reset or set password</Link>
+        </div>
       </div>
     );
   }
@@ -139,7 +142,10 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
           </label>
 
           <label className="block">
-            <span className="mb-1.5 block text-xs font-semibold text-foreground">Password</span>
+            <span className="mb-1.5 flex items-center justify-between gap-3 text-xs font-semibold text-foreground">
+              Password
+              {!isSignUp && <Link href={`/portal/forgot-password${email ? `?email=${encodeURIComponent(email)}` : ""}`} className="text-accent hover:underline">Forgot password?</Link>}
+            </span>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
