@@ -109,3 +109,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 table {
   font-variant-numeric: tabular-nums;
 }
+
+@media print {
+  :root { --background: #ffffff; }
+  body { background: white; }
+  header { display: none; }
+  main { max-width: none !important; padding: 0 !important; }
+  .app-card { break-inside: avoid; box-shadow: none; }
+  a { color: inherit; text-decoration: none; }
+}

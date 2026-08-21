@@ -1,10 +1,12 @@
+import Link from "next/link";
 import { getMyDomainStatuses } from "@/lib/portal-data";
 import { MONITOR_TYPES, MONITOR_LABELS } from "@/lib/data";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CheckNowButton } from "./CheckNowButton";
+import type { PortalDomainStatus } from "@/lib/portal-data";
 
-export async function DomainStatusSection() {
-  const domains = await getMyDomainStatuses();
+export async function DomainStatusSection({ domains: suppliedDomains }: { domains?: PortalDomainStatus[] }) {
+  const domains = suppliedDomains ?? (await getMyDomainStatuses());
 
   if (domains.length === 0) {
     return (
@@ -36,10 +38,15 @@ export async function DomainStatusSection() {
           <tbody className="divide-y divide-border">
             {domains.map((domain) => (
               <tr key={domain.domainId} className="transition-colors hover:bg-blue-50/30">
-                <td className="px-5 py-4 font-semibold text-foreground">{domain.domainName}</td>
+                <td className="px-5 py-4">
+                  <Link href={`/portal/domains/${domain.domainId}`} className="font-semibold text-foreground transition-colors hover:text-accent">
+                    {domain.domainName}
+                  </Link>
+                  <span className="mt-1 block text-xs text-subtle">View evidence and fixes</span>
+                </td>
                 {MONITOR_TYPES.map((monitorType) => (
                   <td key={monitorType} className="px-5 py-3.5">
-                    <StatusBadge status={domain.statuses[monitorType]} />
+                    <StatusBadge status={domain.statuses[monitorType].status} />
                   </td>
                 ))}
                 <td className="px-5 py-3.5 text-right">

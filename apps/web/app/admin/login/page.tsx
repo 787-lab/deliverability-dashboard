@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="app-card mx-auto mt-12 max-w-md p-7 sm:p-8"><p className="eyebrow">Secure access</p>
-      <h1 className="mb-2 mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Admin sign in</h1><p className="mb-6 text-sm text-muted">Enter your Advazon email to receive a secure login link.</p>
+      <h1 className="mb-2 mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Admin sign in</h1><p className="mb-6 text-sm text-muted">Enter your advazon. email to receive a secure login link.</p>
       <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="email"

@@ -10,7 +10,7 @@ const geist = Geist({
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: { default: "Advazon Deliverability", template: "%s · Advazon Deliverability" },
+  title: { default: "advazon. Deliverability", template: "%s · advazon. Deliverability" },
   description: "Continuous email infrastructure monitoring for SPF, DKIM, DMARC and domain reputation.",
 };
 

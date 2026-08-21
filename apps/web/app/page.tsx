@@ -43,7 +43,7 @@ export default async function HomePage() {
                 Protect your sender reputation <span className="text-accent">before it slips.</span>
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-8 text-muted">
-                Advazon monitors the DNS and reputation signals behind your outbound email, then alerts you the moment something needs attention.
+                advazon. monitors the DNS and reputation signals behind your outbound email, then alerts you the moment something needs attention.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Link href="/portal/login" className="primary-button px-5 py-3.5">Open client portal <ArrowIcon className="h-4 w-4" /></Link>
@@ -95,7 +95,7 @@ export default async function HomePage() {
       </main>
 
       <footer className="border-t border-border bg-slate-50">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8"><Brand/><p className="text-xs text-subtle">© {new Date().getFullYear()} Advazon. Professional deliverability monitoring.</p></div>
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8"><Brand/><p className="text-xs text-subtle">© {new Date().getFullYear()} advazon. Professional deliverability monitoring.</p></div>
       </footer>
     </div>
   );

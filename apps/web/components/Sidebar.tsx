@@ -40,7 +40,7 @@ export function Sidebar() {
           <a href="/" target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium text-slate-400 transition-colors hover:bg-white/[.07] hover:text-white"><span>Public site</span><ExternalIcon className="h-4 w-4"/></a>
         </nav>
         <div className="m-3 rounded-xl border border-white/10 bg-white/[.05] p-3.5">
-          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-400/15 text-xs font-bold text-blue-300">RH</span><div className="min-w-0"><p className="truncate text-xs font-semibold text-white">Advazon Admin</p><p className="mt-0.5 truncate text-[10px] text-slate-500">Operations workspace</p></div></div>
+          <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-400/15 text-xs font-bold text-blue-300">RH</span><div className="min-w-0"><p className="truncate text-xs font-semibold text-white">advazon. Admin</p><p className="mt-0.5 truncate text-[10px] text-slate-500">Operations workspace</p></div></div>
         </div>
       </aside>
     </>
