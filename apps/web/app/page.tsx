@@ -12,9 +12,15 @@ const monitors = [
 ];
 
 export default async function HomePage() {
-  const supabase = await getServerSupabaseForUser();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (user) redirect(user.email === process.env.ADMIN_EMAIL ? "/admin" : "/portal");
+  // A Vercel Preview may intentionally be created before its Supabase
+  // variables are scoped to Preview. Keep the public product page available
+  // instead of crashing the entire deployment; authenticated routes still
+  // require the real Supabase configuration.
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    const supabase = await getServerSupabaseForUser();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) redirect(user.email === process.env.ADMIN_EMAIL ? "/admin" : "/portal");
+  }
 
   return (
     <div className="min-h-screen overflow-hidden bg-white">
