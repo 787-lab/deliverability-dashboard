@@ -3,8 +3,8 @@
 import { useState, type FormEvent } from "react";
 import { createMyClient } from "./actions";
 
-export function OnboardingForm() {
-  const [name, setName] = useState("");
+export function OnboardingForm({ defaultName = "" }: { defaultName?: string }) {
+  const [name, setName] = useState(defaultName);
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
