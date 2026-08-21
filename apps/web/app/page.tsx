@@ -32,7 +32,10 @@ export default async function HomePage() {
             <a href="#workflow" className="transition-colors hover:text-foreground">How it works</a>
             <a href="#security" className="transition-colors hover:text-foreground">Security</a>
           </nav>
-          <Link href="/portal/login" className="secondary-button">Client login <ArrowIcon className="h-4 w-4" /></Link>
+          <div className="flex items-center gap-2">
+            <Link href="/portal/login" className="secondary-button">Sign in</Link>
+            <Link href="/portal/signup" className="primary-button">Sign up <ArrowIcon className="h-4 w-4" /></Link>
+          </div>
         </div>
       </header>
 
@@ -52,8 +55,8 @@ export default async function HomePage() {
                 advazon. monitors the DNS and reputation signals behind your outbound email, then alerts you the moment something needs attention.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <Link href="/portal/login" className="primary-button px-5 py-3.5">Open client portal <ArrowIcon className="h-4 w-4" /></Link>
-                <a href="#monitoring" className="secondary-button px-5 py-3.5">Explore monitoring</a>
+                <Link href="/portal/signup" className="primary-button px-5 py-3.5">Create client account <ArrowIcon className="h-4 w-4" /></Link>
+                <Link href="/portal/login" className="secondary-button px-5 py-3.5">Sign in</Link>
               </div>
               <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted">
                 {['No credit card', 'Secure client access', 'Actionable alerts'].map(item => <span key={item} className="flex items-center gap-2"><CheckIcon className="h-4 w-4 text-emerald-600" />{item}</span>)}
