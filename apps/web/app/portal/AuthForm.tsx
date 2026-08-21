@@ -6,7 +6,7 @@ import { useState, type FormEvent } from "react";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
 
 type AuthMode = "signin" | "signup";
-type FormStatus = "idle" | "submitting" | "confirmation" | "error";
+type FormStatus = "idle" | "submitting" | "confirmation" | "existing" | "error";
 
 export function AuthForm({ mode }: { mode: AuthMode }) {
   const router = useRouter();
@@ -46,6 +46,14 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
         if (error) throw error;
 
+        // With email confirmation enabled, Supabase intentionally returns a
+        // non-error response for an existing account. An empty identities
+        // array is the documented signal that no new identity was created.
+        if (data.user?.identities?.length === 0) {
+          setStatus("existing");
+          return;
+        }
+
         if (!data.session) {
           setStatus("confirmation");
           return;
@@ -67,19 +75,33 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     }
   }
 
+  if (status === "existing") {
+    return (
+      <div className="app-card mx-auto mt-12 max-w-md p-7 text-center sm:p-8">
+        <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-sky-50 text-lg font-bold text-accent">i</div>
+        <p className="eyebrow">Account already exists</p>
+        <h1 className="mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Use your existing account</h1>
+        <p className="mt-3 text-sm leading-6 text-muted">
+          <strong className="text-foreground">{email}</strong> is already registered. No duplicate account was created.
+        </p>
+        <div className="mt-6 grid gap-3">
+          <Link href="/portal/login" className="primary-button w-full">Sign in</Link>
+          <Link href={`/portal/forgot-password?email=${encodeURIComponent(email)}`} className="secondary-button w-full">Reset or set password</Link>
+        </div>
+      </div>
+    );
+  }
+
   if (status === "confirmation") {
     return (
       <div className="app-card mx-auto mt-12 max-w-md p-7 text-center sm:p-8">
         <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-lg font-bold text-emerald-700">✓</div>
-        <p className="eyebrow">Check your inbox</p>
-        <h1 className="mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Continue with your email</h1>
+        <p className="eyebrow">Account created</p>
+        <h1 className="mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Confirm your email</h1>
         <p className="mt-3 text-sm leading-6 text-muted">
-          If this is a new account, we sent a confirmation link to <strong className="text-foreground">{email}</strong>. If you already have an account, sign in or reset your password.
+          We sent a confirmation link to <strong className="text-foreground">{email}</strong>. Confirm it once, then sign in with your password.
         </p>
-        <div className="mt-6 grid gap-3">
-          <Link href="/portal/login" className="primary-button w-full">Return to sign in</Link>
-          <Link href={`/portal/forgot-password?email=${encodeURIComponent(email)}`} className="secondary-button w-full">Reset or set password</Link>
-        </div>
+        <Link href="/portal/login" className="secondary-button mt-6 w-full">Return to sign in</Link>
       </div>
     );
   }
