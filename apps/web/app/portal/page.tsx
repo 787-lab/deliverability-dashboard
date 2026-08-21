@@ -42,7 +42,7 @@ export default async function PortalHome() {
   if (!client) {
     return (
       <div className="mx-auto mt-12 max-w-lg">
-        <OnboardingForm />
+        <OnboardingForm defaultName={typeof user.user_metadata.company_name === "string" ? user.user_metadata.company_name : ""} />
       </div>
     );
   }
