@@ -6,7 +6,7 @@ import { useState, type FormEvent } from "react";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
 
 type AuthMode = "signin" | "signup";
-type FormStatus = "idle" | "submitting" | "confirmation" | "existing" | "error";
+type FormStatus = "idle" | "submitting" | "confirmation" | "error";
 
 export function AuthForm({ mode }: { mode: AuthMode }) {
   const router = useRouter();
@@ -18,10 +18,12 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [existingAccount, setExistingAccount] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage("");
+    setExistingAccount(false);
 
     if (isSignUp && password !== confirmPassword) {
       setStatus("error");
@@ -50,7 +52,9 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         // non-error response for an existing account. An empty identities
         // array is the documented signal that no new identity was created.
         if (data.user?.identities?.length === 0) {
-          setStatus("existing");
+          setExistingAccount(true);
+          setStatus("error");
+          setErrorMessage("This email is already registered with advazon.");
           return;
         }
 
@@ -73,23 +77,6 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
       setStatus("error");
       setErrorMessage(error instanceof Error ? error.message : "Authentication failed. Please try again.");
     }
-  }
-
-  if (status === "existing") {
-    return (
-      <div className="app-card mx-auto mt-12 max-w-md p-7 text-center sm:p-8">
-        <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-sky-50 text-lg font-bold text-accent">i</div>
-        <p className="eyebrow">Account already exists</p>
-        <h1 className="mt-2 text-2xl font-bold tracking-[-.03em] text-foreground">Use your existing account</h1>
-        <p className="mt-3 text-sm leading-6 text-muted">
-          <strong className="text-foreground">{email}</strong> is already registered. No duplicate account was created.
-        </p>
-        <div className="mt-6 grid gap-3">
-          <Link href="/portal/login" className="primary-button w-full">Sign in</Link>
-          <Link href={`/portal/forgot-password?email=${encodeURIComponent(email)}`} className="secondary-button w-full">Reset or set password</Link>
-        </div>
-      </div>
-    );
   }
 
   if (status === "confirmation") {
@@ -158,9 +145,29 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               autoComplete="email"
               placeholder="you@company.com"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="field"
+              onChange={(event) => {
+                setEmail(event.target.value);
+                if (existingAccount) {
+                  setExistingAccount(false);
+                  setStatus("idle");
+                  setErrorMessage("");
+                }
+              }}
+              aria-invalid={existingAccount}
+              aria-describedby={existingAccount ? "existing-account-error" : undefined}
+              className={`field ${existingAccount ? "!border-rose-400 !ring-2 !ring-rose-100" : ""}`}
             />
+            {existingAccount && (
+              <div id="existing-account-error" role="alert" className="mt-2 rounded-lg border border-rose-200 bg-rose-50 px-3.5 py-3 text-sm leading-5 text-rose-700">
+                <p className="font-semibold">{errorMessage}</p>
+                <p className="mt-1 text-rose-600">
+                  <Link href="/portal/login" className="font-semibold underline underline-offset-2">Sign in</Link>
+                  <span aria-hidden="true"> or </span>
+                  <Link href={`/portal/forgot-password?email=${encodeURIComponent(email)}`} className="font-semibold underline underline-offset-2">reset your password</Link>
+                  <span>.</span>
+                </p>
+              </div>
+            )}
           </label>
 
           <label className="block">
@@ -210,7 +217,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             {status === "submitting" ? "Please wait…" : isSignUp ? "Create account" : "Sign in"}
           </button>
 
-          {status === "error" && (
+          {status === "error" && !existingAccount && (
             <p role="alert" className="rounded-lg bg-rose-50 px-3.5 py-3 text-sm text-rose-700">{errorMessage}</p>
           )}
         </form>
