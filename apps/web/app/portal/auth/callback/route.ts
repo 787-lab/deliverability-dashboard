@@ -6,7 +6,8 @@ import { getServerSupabase } from "@/lib/supabase";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/portal";
+  const requestedNext = searchParams.get("next") ?? "/portal";
+  const next = requestedNext.startsWith("/portal/") || requestedNext === "/portal" ? requestedNext : "/portal";
 
   if (code) {
     const cookieStore = await cookies();

@@ -76,7 +76,7 @@ export async function addDomain(domainNameInput: string): Promise<AddDomainResul
     return { ok: false, error: "Could not look up your account." };
   }
   if (!client) {
-    return { ok: false, error: "Your login isn't linked to a client account yet. Contact Advazon." };
+    return { ok: false, error: "Your login isn't linked to a client account yet. Contact advazon." };
   }
 
   const { data: domain, error: insertError } = await supabase

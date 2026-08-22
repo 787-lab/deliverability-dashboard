@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f8fa;
+  --background: #f5f7fb;
   --surface: #ffffff;
-  --foreground: #0f172a;
-  --muted: #64748b;
-  --subtle: #94a3b8;
-  --border: #e5e7eb;
-  --border-strong: #d8dce3;
-  --accent: #4338ca;
-  --accent-hover: #3730a3;
-  --accent-soft: #eef1ff;
-  --sidebar-width: 15rem;
+  --foreground: #101828;
+  --muted: #667085;
+  --subtle: #98a2b3;
+  --border: #e4e7ec;
+  --border-strong: #d0d5dd;
+  --accent: #0a66c2;
+  --accent-hover: #07559f;
+  --accent-soft: #eaf4ff;
+  --navy: #0b1f3a;
+  --sidebar-width: 16.5rem;
 }
 
 @theme inline {
@@ -25,8 +26,14 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-soft: var(--accent-soft);
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --color-navy: var(--navy);
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
+
+* { border-color: var(--border); }
+
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--background);
@@ -35,6 +42,79 @@ body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
+::selection { background: #cfe7ff; color: #0b3765; }
+
+button, a, input, select, summary { outline-offset: 3px; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+.brand-mark {
+  display: inline-flex;
+  height: 2.25rem;
+  width: 2.25rem;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  box-shadow: 0 6px 18px rgb(10 102 194 / 20%);
+}
+
+.app-card {
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%), 0 10px 24px rgb(16 24 40 / 3%);
+}
+
+.metric-card { position: relative; overflow: hidden; }
+.metric-card::after {
+  content: "";
+  position: absolute;
+  inset: auto -2rem -3rem auto;
+  height: 7rem;
+  width: 7rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  opacity: .65;
+}
+
+.page-title { font-size: clamp(1.5rem, 2vw, 2rem); line-height: 1.15; font-weight: 700; letter-spacing: -.035em; }
+.eyebrow { font-size: .6875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.field {
+  width: 100%; border-radius: .7rem; border: 1px solid var(--border-strong); background: white;
+  padding: .7rem .85rem; font-size: .875rem; color: var(--foreground); transition: 150ms ease;
+}
+.field:hover { border-color: #98a2b3; }
+.field:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); outline: none; }
+.primary-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border-radius: .7rem;
+  background: var(--accent); padding: .7rem 1rem; color: white; font-size: .875rem; font-weight: 650;
+  box-shadow: 0 6px 14px rgb(10 102 194 / 17%); transition: 150ms ease;
+}
+.primary-button:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.primary-button:disabled { cursor: not-allowed; opacity: .55; transform: none; }
+.secondary-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: .45rem; border-radius: .7rem;
+  border: 1px solid var(--border-strong); background: white; padding: .62rem .9rem; color: var(--foreground);
+  font-size: .8125rem; font-weight: 600; transition: 150ms ease;
+}
+.secondary-button:hover { background: var(--background); border-color: #98a2b3; }
+
 table {
   font-variant-numeric: tabular-nums;
+}
+
+@media print {
+  :root { --background: #ffffff; }
+  body { background: white; }
+  header { display: none; }
+  main { max-width: none !important; padding: 0 !important; }
+  .app-card { break-inside: avoid; box-shadow: none; }
+  a { color: inherit; text-decoration: none; }
 }
